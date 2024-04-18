@@ -1,9 +1,10 @@
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AddCategoryRequest } from '../Models/add-category-request.models';
 import { CategoryService } from '../services/category.service';
 import { response } from 'express';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-category',
@@ -12,17 +13,17 @@ import { response } from 'express';
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.css'
 })
-export class AddCategoryComponent {
+export class AddCategoryComponent implements OnDestroy {
   model: AddCategoryRequest;
+  private addCategorySubscription?: Subscription;
   constructor(private categoryservice: CategoryService) {
     this.model = {
       name: '',
       urlHandle: ''
     }
   }
-
   onFormSubmit() {
-    this.categoryservice.addCategory(this.model)
+    this.addCategorySubscription = this.categoryservice.addCategory(this.model)
       .subscribe({
         next: (response) => {
           console.log("Success");
@@ -32,5 +33,8 @@ export class AddCategoryComponent {
         }
       }
       );
+  }
+  ngOnDestroy(): void {
+    this.addCategorySubscription?.unsubscribe();
   }
 }
