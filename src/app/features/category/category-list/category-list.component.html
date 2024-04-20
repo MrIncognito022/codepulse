@@ -3,7 +3,6 @@
     <div class="d-flex justify-content-end mt-3">
         <a class="btn btn-primary" routerLink="/admin/categories/add">Add Category</a>
     </div>
-
     <ng-container *ngIf="categories$ | async as categories">
         <table class="table table-bordered mt-3">
             <thead>
@@ -11,6 +10,7 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Url Handle</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -18,6 +18,10 @@
                     <td>{{Category.id}}</td>
                     <td>{{Category.name}}</td>
                     <td>{{Category.urlHandle}}</td>
+                    <td>
+                        <a [routerLink]="['/admin/categories',Category.id]" class="btn btn-light">
+                            Edit </a>
+                    </td>
                 </tr>
             </tbody>
         </table>
